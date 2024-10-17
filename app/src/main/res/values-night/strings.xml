@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="devcoach">DevCoach</string>
+    <string name="image_up_coming_event">Image Up Coming Event</string>
+    <string name="image_view_content">Image View Content</string>
+    <string name="register">Register</string>
+    <string name="error_loading_events">Error loading events</string>
+    <string name="try_again">Try Again</string>
+</resources>
