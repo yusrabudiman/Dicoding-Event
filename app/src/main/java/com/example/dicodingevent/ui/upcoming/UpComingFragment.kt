@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,24 +31,19 @@ class UpComingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize adapter RecyclerView
         adapter = ReviewVerticalAdapter { eventId ->
             val intent = Intent(context, DetailEventActivity::class.java)
             intent.putExtra("EXTRA_EVENT_ID", eventId)
-            Toast.makeText(context, "Event ID: $eventId", Toast.LENGTH_SHORT).show() // Debugging
             context?.startActivity(intent)
         }
 
-        // Setup RecyclerView
         binding.rvUpcomingEvents.layoutManager = LinearLayoutManager(requireContext())
         binding.rvUpcomingEvents.adapter = adapter
 
-        // Observe data from ViewModel
         observeViewModel()
         upComingViewModel.getActiveEvents()
 
         binding.btnRefresh.setOnClickListener {
-            // Reset error message when refreshing data
             resetErrorMessage()
             upComingViewModel.getActiveEvents()
         }

@@ -38,7 +38,6 @@ class FinishedFragment : Fragment() {
         finishedAdapter = ReviewVerticalAdapter { eventId ->
             val intent = Intent(context, DetailEventActivity::class.java)
             intent.putExtra("EXTRA_EVENT_ID", eventId)
-            Toast.makeText(context, "Event ID: $eventId", Toast.LENGTH_SHORT).show() // Debugging
             context?.startActivity(intent)
         }
 

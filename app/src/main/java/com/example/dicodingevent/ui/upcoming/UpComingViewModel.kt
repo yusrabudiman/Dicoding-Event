@@ -28,7 +28,7 @@ class UpComingViewModel : ViewModel() {
                 val response: Response<EventResponse> = ApiConfig.getApiServices().getHomeActiveEvent()
                 if (response.isSuccessful) {
                     _events.value = response.body()?.listEvents ?: listOf()
-                    clearErrorMessage() // Clear error on successful fetch
+                    clearErrorMessage()
                 } else {
                     _errorMessage.value = "Failed to fetch events: ${response.message()}"
                 }
