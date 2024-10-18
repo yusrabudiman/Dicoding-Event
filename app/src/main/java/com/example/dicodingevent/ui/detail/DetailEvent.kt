@@ -62,9 +62,9 @@ class DetailEventActivity : AppCompatActivity() {
             detail.event.let { event ->
                 Glide.with(this@DetailEventActivity).load(event.imageLogo).into(imgEventLogo)
                 tvEventName.text = event.name
-                tvOwnerName.text = "By: ${event.ownerName}"
-                tvBeginTime.text = "Time: ${event.beginTime}"
-                tvQuota.text = "Quota Left: ${event.quota?.minus(event.registrants ?: 0)}"
+                tvOwnerName.text = "Penyelenggara: ${event.ownerName}"
+                tvBeginTime.text = "Waktu Acara: ${event.beginTime}"
+                tvQuota.text = "Sisa Kuota: ${event.quota?.minus(event.registrants ?: 0)}"
 
                 val htmlDescription = HtmlCompat.fromHtml(
                     event.description ?: "",
