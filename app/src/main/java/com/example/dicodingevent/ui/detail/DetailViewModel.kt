@@ -17,8 +17,12 @@ class DetailViewModel : ViewModel() {
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
     fun getEventDetail(eventId: Int) {
         viewModelScope.launch {
+            _isLoading.value = true
             try {
                 val response = ApiConfig.getApiServices().getDetailEvent(eventId)
                 if (response.isSuccessful) {
@@ -30,7 +34,10 @@ class DetailViewModel : ViewModel() {
             } catch (e: Exception) {
                 _errorMessage.value = e.message
                 Log.e("DetailViewModel", "Exception: ${e.message}")
+            } finally {
+                _isLoading.value = false
             }
         }
     }
+
 }

@@ -23,7 +23,7 @@ class DetailEventActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailEventBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar?.title="Detail Screen"
+        supportActionBar?.title="Detail Event"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val eventId = intent.getIntExtra("EXTRA_EVENT_ID", -1)
@@ -32,13 +32,18 @@ class DetailEventActivity : AppCompatActivity() {
         }
         observeViewModel()
     }
-
     private fun observeViewModel() {
         detailViewModel.eventDetail.observe(this) { eventDetail ->
-            eventDetail?.let { setupUI(it) }
-        }
+            binding.progressBar.visibility = View.GONE
 
+            eventDetail?.let {
+                setupUI(it)
+                binding.btnOpenLink.visibility = View.VISIBLE
+            }
+        }
         detailViewModel.errorMessage.observe(this) { errorMessage ->
+            binding.progressBar.visibility = View.GONE
+
             if (!errorMessage.isNullOrEmpty()) {
                 Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
                 binding.tvErrorMessage.text = errorMessage
@@ -47,6 +52,9 @@ class DetailEventActivity : AppCompatActivity() {
                 binding.tvErrorMessage.visibility = View.GONE
             }
         }
+
+        binding.progressBar.visibility = View.VISIBLE
+        binding.btnOpenLink.visibility = View.GONE
     }
 
     @SuppressLint("SetTextI18n")

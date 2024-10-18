@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -54,10 +53,6 @@ class FinishedFragment : Fragment() {
         // Fetch data from ViewModel
         finishedViewModel.getFinishedEvent()
     }
-    override fun onResume() {
-        super.onResume()
-        resetErrorMessage()
-    }
 
     private fun resetErrorMessage() {
         finishedViewModel.clearErrorMessage()
@@ -85,7 +80,7 @@ class FinishedFragment : Fragment() {
             }
         }
 
-        // Hide SearchView when dismissed
+
         searchView.addTransitionListener { _, _, newState ->
             if (newState == SearchView.TransitionState.HIDDEN) {
                 searchView.visibility = View.GONE
@@ -96,6 +91,7 @@ class FinishedFragment : Fragment() {
     private fun performSearch(query: String) {
         finishedViewModel.searchFinishedEvents(query).observe(viewLifecycleOwner) { searchResults ->
             finishedAdapter.submitList(searchResults)
+            binding.rvFinishedEvent.scrollToPosition(0) // Reset scroll to top
         }
     }
 
@@ -103,6 +99,7 @@ class FinishedFragment : Fragment() {
         finishedViewModel.finishedEvents.observe(viewLifecycleOwner) { finishedEvents ->
             finishedEvents?.let {
                 finishedAdapter.submitList(it)
+                binding.rvFinishedEvent.scrollToPosition(0) // Reset scroll to top when displaying all events
             }
         }
 
