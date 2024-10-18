@@ -8,19 +8,26 @@
     android:layout_height="match_parent"
     tools:context=".SplashScreen">
 
-    <ImageView
-        android:id="@+id/logoImageView"
-        android:layout_width="413dp"
-        android:layout_height="280dp"
+    <androidx.cardview.widget.CardView
+        android:layout_width="353dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
         android:layout_marginTop="150dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/dicoding_event_image"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.078"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintVertical_bias="0.078">
+
+        <ImageView
+            android:layout_width="356dp"
+            android:layout_height="103dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/dicoding_event_image"
+            tools:ignore="ContentDescription,ImageContrastCheck,VisualLintBounds" />
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
