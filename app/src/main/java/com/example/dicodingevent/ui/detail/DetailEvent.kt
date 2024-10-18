@@ -28,15 +28,12 @@ class DetailEventActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val eventId = intent.getIntExtra("EXTRA_EVENT_ID", -1)
-        if (eventId != -1) {
-            detailViewModel.getEventDetail(eventId)
-        }
+        eventId.takeIf { it != -1 }?.let { detailViewModel.getEventDetail(it) }
         observeViewModel()
     }
     private fun observeViewModel() {
         detailViewModel.eventDetail.observe(this) { eventDetail ->
             binding.progressBar.visibility = View.GONE
-
             eventDetail?.let {
                 setupUI(it)
                 binding.btnOpenLink.visibility = View.VISIBLE
@@ -44,13 +41,14 @@ class DetailEventActivity : AppCompatActivity() {
         }
         detailViewModel.errorMessage.observe(this) { errorMessage ->
             binding.progressBar.visibility = View.GONE
-
-            if (!errorMessage.isNullOrEmpty()) {
-                Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
-                binding.tvErrorMessage.text = errorMessage
-                binding.tvErrorMessage.visibility = View.VISIBLE
-            } else {
-                binding.tvErrorMessage.visibility = View.GONE
+            when {
+                !errorMessage.isNullOrEmpty() -> {
+                    binding.tvErrorMessage.text = errorMessage
+                    binding.tvErrorMessage.visibility = View.VISIBLE
+                }
+                else -> {
+                    binding.tvErrorMessage.visibility = View.GONE
+                }
             }
         }
 

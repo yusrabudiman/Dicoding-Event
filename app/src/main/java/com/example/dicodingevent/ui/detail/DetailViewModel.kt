@@ -18,7 +18,7 @@ class DetailViewModel : ViewModel() {
     val errorMessage: LiveData<String?> = _errorMessage
 
     private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
+
 
     fun getEventDetail(eventId: Int) {
         viewModelScope.launch {

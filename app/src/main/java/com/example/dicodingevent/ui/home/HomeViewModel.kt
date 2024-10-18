@@ -28,12 +28,14 @@ class HomeViewModel : ViewModel() {
         _isLoading.value = true
         viewModelScope.launch {
             try {
-                val response: Response<EventResponse> =
-                    ApiConfig.getApiServices().getHomeActiveEvent()
-                if (response.isSuccessful) {
-                    _events.value = response.body()?.listEvents ?: listOf()
-                } else {
-                    _errorMessage.value = "Failed to fetch events: ${response.message()}"
+                val response: Response<EventResponse> = ApiConfig.getApiServices().getHomeActiveEvent()
+                when {
+                    response.isSuccessful -> {
+                        _events.value = response.body()?.listEvents ?: listOf()
+                    }
+                    else -> {
+                        _errorMessage.value = "Failed to fetch events: ${response.message()}"
+                    }
                 }
             } catch (e: Exception) {
                 _errorMessage.value = "Error: ${e.message}"
@@ -47,18 +49,22 @@ class HomeViewModel : ViewModel() {
         _isLoading.value = true
         viewModelScope.launch {
             try {
-                val response: Response<EventResponse> =
-                    ApiConfig.getApiServices().getFinishedEvent()
-                if (response.isSuccessful) {
-                    val finishedEventList = response.body()?.listEvents
-                    if (!finishedEventList.isNullOrEmpty()) {
-                        _finishedEvents.value = finishedEventList
-                    } else {
-                        _errorMessage.value = "No available."
+                val response: Response<EventResponse> = ApiConfig.getApiServices().getFinishedEvent()
+                when {
+                    response.isSuccessful -> {
+                        val finishedEventList = response.body()?.listEvents
+                        when {
+                            !finishedEventList.isNullOrEmpty() -> {
+                                _finishedEvents.value = finishedEventList
+                            }
+                            else -> {
+                                _errorMessage.value = "No available."
+                            }
+                        }
                     }
-                } else {
-                    _errorMessage.value =
-                        "Failed finished events: ${response.code()} ${response.message()}"
+                    else -> {
+                        _errorMessage.value = "Failed finished events: ${response.code()} ${response.message()}"
+                    }
                 }
             } catch (e: Exception) {
                 _errorMessage.value = "Error: ${e.message}"

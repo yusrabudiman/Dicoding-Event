@@ -102,11 +102,14 @@ class FinishedFragment : Fragment() {
         }
 
         finishedViewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
-            if (!errorMessage.isNullOrEmpty()) {
-                binding.tvErrorMessage.text = errorMessage
-                binding.tvErrorMessage.visibility = View.VISIBLE
-            } else {
-                binding.tvErrorMessage.visibility = View.GONE
+            when {
+                !errorMessage.isNullOrEmpty() -> {
+                    binding.tvErrorMessage.text = errorMessage
+                    binding.tvErrorMessage.visibility = View.VISIBLE
+                }
+                else -> {
+                    binding.tvErrorMessage.visibility = View.GONE
+                }
             }
         }
     }

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,7 +33,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize adapters intent to detail
+        // Initialize adapters intent to detailEvent.kt
         upcomingAdapter = ReviewHorizontalAdapter { eventId ->
             val intent = Intent(context, DetailEventActivity::class.java)
             intent.putExtra("EXTRA_EVENT_ID", eventId)
@@ -49,14 +48,13 @@ class HomeFragment : Fragment() {
         // Setup RecyclerView
         binding.rvUpcomingEvent.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvUpcomingEvent.adapter = upcomingAdapter
-
         binding.rvFinishedEvent.layoutManager = LinearLayoutManager(requireContext())
         binding.rvFinishedEvent.adapter = finishedAdapter
 
         //LiveData
         observeViewModel()
 
-        // Fetch data from ViewModel
+        // Fetch data
         homeViewModel.getActiveEvents()
         homeViewModel.getFinishedEvents()
 
@@ -80,13 +78,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        // Observe active events for the horizontal list
+        // Observe active horizontal list
         homeViewModel.events.observe(viewLifecycleOwner) { events ->
             val upcomingEvents = events.take(5)
             upcomingAdapter.submitList(upcomingEvents)
         }
 
-        // Observe finished events for the vertical list
+        // Observe finished
         homeViewModel.finishedEvents.observe(viewLifecycleOwner) { finishedEvents ->
             finishedEvents?.let {
                 val limitedFinishedEvents = it.take(5)
@@ -94,20 +92,23 @@ class HomeFragment : Fragment() {
             }
         }
 
-        // Observe loading state
+        // Observe loading
         homeViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
 
-        // Observe error messages
+        // Observe error
         homeViewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
-            if (!errorMessage.isNullOrEmpty()) {
-                binding.tvErrorMessage.text = errorMessage
-                binding.tvErrorMessage.visibility = View.VISIBLE
-                binding.btnRefresh.visibility = View.VISIBLE
-            } else {
-                binding.tvErrorMessage.visibility = View.GONE
-                binding.btnRefresh.visibility = View.GONE
+            when {
+                !errorMessage.isNullOrEmpty() -> {
+                    binding.tvErrorMessage.text = errorMessage
+                    binding.tvErrorMessage.visibility = View.VISIBLE
+                    binding.btnRefresh.visibility = View.VISIBLE
+                }
+                else -> {
+                    binding.tvErrorMessage.visibility = View.GONE
+                    binding.btnRefresh.visibility = View.GONE
+                }
             }
         }
     }

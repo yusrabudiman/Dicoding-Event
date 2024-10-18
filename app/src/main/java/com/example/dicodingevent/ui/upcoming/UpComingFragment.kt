@@ -66,13 +66,16 @@ class UpComingFragment : Fragment() {
         }
 
         upComingViewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
-            if (!errorMessage.isNullOrEmpty()) {
-                binding.tvErrorMessage.text = errorMessage
-                binding.tvErrorMessage.visibility = View.VISIBLE
-                binding.btnRefresh.visibility = View.VISIBLE
-            } else {
-                binding.tvErrorMessage.visibility = View.GONE
-                binding.btnRefresh.visibility = View.GONE
+            when {
+                !errorMessage.isNullOrEmpty() -> {
+                    binding.tvErrorMessage.text = errorMessage
+                    binding.tvErrorMessage.visibility = View.VISIBLE
+                    binding.btnRefresh.visibility = View.VISIBLE
+                }
+                else -> {
+                    binding.tvErrorMessage.visibility = View.GONE
+                    binding.btnRefresh.visibility = View.GONE
+                }
             }
         }
     }
