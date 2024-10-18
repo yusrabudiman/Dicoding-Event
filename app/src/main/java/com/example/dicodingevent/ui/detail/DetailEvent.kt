@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -66,10 +67,13 @@ class DetailEventActivity : AppCompatActivity() {
                 tvOwnerName.text = "By: ${event.ownerName}"
                 tvBeginTime.text = "Time: ${event.beginTime}"
                 tvQuota.text = "Quota Left: ${event.quota?.minus(event.registrants ?: 0)}"
-                tvDescription.text = HtmlCompat.fromHtml(
+
+                val htmlDescription = HtmlCompat.fromHtml(
                     event.description ?: "",
                     HtmlCompat.FROM_HTML_MODE_LEGACY
                 )
+                tvDescription.text = htmlDescription
+                tvDescription.movementMethod = LinkMovementMethod.getInstance()
 
                 btnOpenLink.setOnClickListener {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(event.link))

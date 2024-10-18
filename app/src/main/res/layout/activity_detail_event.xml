@@ -77,7 +77,9 @@
                 android:id="@+id/tvDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="16dp" />
+                android:paddingTop="16dp"
+                android:autoLink="web"
+                android:linksClickable="true" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnOpenLink"
