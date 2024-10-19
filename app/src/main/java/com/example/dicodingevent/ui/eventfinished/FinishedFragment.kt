@@ -101,17 +101,37 @@ class FinishedFragment : Fragment() {
     }
 
     private fun performSearch(query: String) {
-        finishedViewModel.searchFinishedEvents(query).observe(viewLifecycleOwner) { searchResults ->
-            finishedAdapter.submitList(searchResults)
-            binding.rvFinishedEvent.scrollToPosition(0) // Reset scroll to top
+        if (query.isEmpty()) {
+            finishedViewModel.finishedEvents.observe(viewLifecycleOwner) { finishedEvents ->
+                finishedAdapter.submitList(finishedEvents)
+                binding.rvFinishedEvent.scrollToPosition(0) // Reset scroll to top
+                binding.tvNoResults.visibility = View.GONE // Hide no results TextView
+                binding.btnTryAgain.visibility = View.GONE // Hide Try Again button when showing all events
+            }
+        } else {
+            finishedViewModel.searchFinishedEvents(query).observe(viewLifecycleOwner) { searchResults ->
+                if (searchResults.isNullOrEmpty()) {
+                    binding.tvErrorMessage.visibility = View.GONE // Hide error message if not relevant
+                    binding.tvNoResults.visibility = View.VISIBLE // Show no results message
+                    binding.btnTryAgain.visibility = View.GONE // Hide button on no results
+                } else {
+                    binding.tvNoResults.visibility = View.GONE // Hide no results message
+                    binding.tvErrorMessage.visibility = View.GONE // Hide error message
+                    binding.btnTryAgain.visibility = View.GONE // Hide the button when results are found
+                    finishedAdapter.submitList(searchResults)
+                }
+                binding.rvFinishedEvent.scrollToPosition(0) // Reset scroll to top
+            }
         }
     }
+
 
     private fun observeViewModel() {
         finishedViewModel.finishedEvents.observe(viewLifecycleOwner) { finishedEvents ->
             finishedEvents?.let {
                 finishedAdapter.submitList(it)
                 binding.rvFinishedEvent.scrollToPosition(0) // Reset scroll to top when displaying all events
+                binding.btnTryAgain.visibility = View.GONE // Hide Try Again button when events are displayed
             }
         }
 
@@ -127,15 +147,16 @@ class FinishedFragment : Fragment() {
                 !errorMessage.isNullOrEmpty() -> {
                     binding.tvErrorMessage.text = errorMessage
                     binding.tvErrorMessage.visibility = View.VISIBLE
-                    binding.btnTryAgain.visibility = View.VISIBLE
+                    binding.btnTryAgain.visibility = View.VISIBLE // Show button for retry on error
                 }
                 else -> {
                     binding.tvErrorMessage.visibility = View.GONE
-                    binding.btnTryAgain.visibility = View.GONE
+                    binding.btnTryAgain.visibility = View.GONE // Hide button when there are no errors
                 }
             }
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

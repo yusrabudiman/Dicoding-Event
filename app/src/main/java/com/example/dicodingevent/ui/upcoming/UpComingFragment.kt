@@ -68,6 +68,15 @@ class UpComingFragment : Fragment() {
 
         upComingViewModel.events.observe(viewLifecycleOwner) { events ->
             adapter.submitList(events)
+
+            // Check if the event list is empty and update the visibility of the no events message
+            if (events.isNullOrEmpty()) {
+                binding.tvNoEventsMessage.visibility = View.VISIBLE
+                binding.rvUpcomingEvents.visibility = View.GONE // Hide RecyclerView
+            } else {
+                binding.tvNoEventsMessage.visibility = View.GONE
+                binding.rvUpcomingEvents.visibility = View.VISIBLE // Show RecyclerView
+            }
         }
 
         upComingViewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
