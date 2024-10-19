@@ -41,6 +41,8 @@ android {
 
 dependencies {
     // Lifecycle ViewModel
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.espresso.contrib)
     implementation(libs.androidx.lifecycle.viewmodel.ktx.v251)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

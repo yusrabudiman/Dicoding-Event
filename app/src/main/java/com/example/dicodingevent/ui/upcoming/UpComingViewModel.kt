@@ -22,6 +22,10 @@ class UpComingViewModel : ViewModel() {
     val errorMessage: LiveData<String?> = _errorMessage
 
     fun getActiveEvents() {
+        if (_isLoading.value == true || !_events.value.isNullOrEmpty()) {
+            return
+        }
+
         _isLoading.value = true
         viewModelScope.launch {
             try {
@@ -39,6 +43,7 @@ class UpComingViewModel : ViewModel() {
             }
         }
     }
+
 
     fun clearErrorMessage() {
         _errorMessage.value = null

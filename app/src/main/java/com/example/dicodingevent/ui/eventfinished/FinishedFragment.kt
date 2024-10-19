@@ -9,6 +9,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.dicodingevent.R
 import com.example.dicodingevent.adapterviewmodel.ReviewVerticalAdapter
 import com.example.dicodingevent.databinding.FragmentFinishedBinding
 import com.example.dicodingevent.ui.detail.DetailEventActivity
@@ -33,20 +34,31 @@ class FinishedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Initialize the finished adapter
         finishedAdapter = ReviewVerticalAdapter { eventId ->
             val intent = Intent(context, DetailEventActivity::class.java)
             intent.putExtra("EXTRA_EVENT_ID", eventId)
             context?.startActivity(intent)
         }
 
+        // Setup RecyclerView for finished events
         binding.rvFinishedEvent.layoutManager = LinearLayoutManager(requireContext())
         binding.rvFinishedEvent.adapter = finishedAdapter
 
+        // Set up SearchBar and SearchView
         setupSearchBar()
 
+        // LiveData observation
         observeViewModel()
 
+        // Fetch data from ViewModel
         finishedViewModel.getFinishedEvent()
+
+        // Handle Try Again button click
+        binding.btnTryAgain.setOnClickListener {
+            resetErrorMessage() // Reset error message
+            finishedViewModel.getFinishedEvent() // Coba ambil ulang data
+        }
     }
 
     private fun resetErrorMessage() {
@@ -63,18 +75,24 @@ class FinishedFragment : Fragment() {
             searchView.show()
         }
 
+        // Handle SearchView query submission
         searchView.editText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                val query = searchView.text.toString()
+                val query = searchView.text.toString().trim() // Trim to avoid accidental spaces
                 performSearch(query)
                 searchView.hide()
+                if (query.isEmpty()) {
+                    searchBar.hint = getString(R.string.devcoach)
+                } else {
+                    searchBar.hint = query
+                }
                 true
             } else {
                 false
             }
         }
 
-
+        // Hide SearchView when dismissed
         searchView.addTransitionListener { _, _, newState ->
             if (newState == SearchView.TransitionState.HIDDEN) {
                 searchView.visibility = View.GONE
@@ -97,18 +115,23 @@ class FinishedFragment : Fragment() {
             }
         }
 
+        // Observe loading state
         finishedViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            isLoading.also { if (it) resetErrorMessage() }
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
 
+        // Observe error messages
         finishedViewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
             when {
                 !errorMessage.isNullOrEmpty() -> {
                     binding.tvErrorMessage.text = errorMessage
                     binding.tvErrorMessage.visibility = View.VISIBLE
+                    binding.btnTryAgain.visibility = View.VISIBLE
                 }
                 else -> {
                     binding.tvErrorMessage.visibility = View.GONE
+                    binding.btnTryAgain.visibility = View.GONE
                 }
             }
         }
@@ -119,3 +142,4 @@ class FinishedFragment : Fragment() {
         _binding = null
     }
 }
+

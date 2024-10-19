@@ -1,12 +1,17 @@
 package com.example.dicodingevent.adapterviewmodel
 
-
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
+import com.example.dicodingevent.R
 import com.example.dicodingevent.data.response.ListEventsItem
 import com.example.dicodingevent.databinding.ListEventHorizontalBinding
 
@@ -29,8 +34,33 @@ class ReviewHorizontalAdapter(private val onItemClick: ((Int?) -> Unit)? = null)
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(event: ListEventsItem) {
             binding.titleEvent.text = event.name
+            binding.progressBarImageLoading.visibility = android.view.View.VISIBLE
             Glide.with(binding.imageEvent.context)
                 .load(event.imageLogo)
+                .placeholder(R.drawable.image_placeholder)
+                .error(R.drawable.broken_image)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        binding.progressBarImageLoading.visibility = android.view.View.GONE
+                        return false
+                    }
+
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        model: Any,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        binding.progressBarImageLoading.visibility = android.view.View.GONE
+                        return false
+                    }
+                })
                 .into(binding.imageEvent)
 
             binding.root.setOnClickListener {

@@ -22,6 +22,9 @@ class FinishedViewModel : ViewModel() {
     val errorMessage: MutableLiveData<String?> = _errorMessage
 
     fun getFinishedEvent() {
+        if (_isLoading.value == true || !_finishedEvents.value.isNullOrEmpty()) {
+            return
+        }
         _isLoading.value = true
         viewModelScope.launch {
             try {

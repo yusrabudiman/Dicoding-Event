@@ -18,59 +18,61 @@ class HomeViewModel : ViewModel() {
     private val _finishedEvents = MutableLiveData<List<ListEventsItem>?>()
     val finishedEvents: MutableLiveData<List<ListEventsItem>?> = _finishedEvents
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
+    private val _isLoadingUpcoming = MutableLiveData<Boolean>()
+    val isLoadingUpcoming: LiveData<Boolean> = _isLoadingUpcoming
+
+    private val _isLoadingFinished = MutableLiveData<Boolean>()
+    val isLoadingFinished: LiveData<Boolean> = _isLoadingFinished
 
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: MutableLiveData<String?> = _errorMessage
 
     fun getActiveEvents() {
-        _isLoading.value = true
+        if (_isLoadingUpcoming.value == true || !_events.value.isNullOrEmpty()) {
+            return // Prevent reloading if already loading or data is available
+        }
+
+        _isLoadingUpcoming.value = true
         viewModelScope.launch {
             try {
                 val response: Response<EventResponse> = ApiConfig.getApiServices().getHomeActiveEvent()
-                when {
-                    response.isSuccessful -> {
-                        _events.value = response.body()?.listEvents ?: listOf()
-                    }
-                    else -> {
-                        _errorMessage.value = "Failed to fetch events: ${response.message()}"
-                    }
+                if (response.isSuccessful) {
+                    _events.value = response.body()?.listEvents ?: listOf()
+                } else {
+                    _errorMessage.value = "Failed to fetch events: ${response.message()}"
                 }
             } catch (e: Exception) {
                 _errorMessage.value = "Error: ${e.message}"
             } finally {
-                _isLoading.value = false
+                _isLoadingUpcoming.value = false
             }
         }
     }
 
     fun getFinishedEvents() {
-        _isLoading.value = true
+        if (_isLoadingFinished.value == true || !_finishedEvents.value.isNullOrEmpty()) {
+            return // Prevent reloading if already loading or data is available
+        }
+
+        _isLoadingFinished.value = true
         viewModelScope.launch {
             try {
                 val response: Response<EventResponse> = ApiConfig.getApiServices().getFinishedEvent()
-                when {
-                    response.isSuccessful -> {
-                        val finishedEventList = response.body()?.listEvents
-                        when {
-                            !finishedEventList.isNullOrEmpty() -> {
-                                _finishedEvents.value = finishedEventList
-                            }
-                            else -> {
-                                _errorMessage.value = "No available."
-                            }
-                        }
+                if (response.isSuccessful) {
+                    val finishedEventList = response.body()?.listEvents
+                    if (!finishedEventList.isNullOrEmpty()) {
+                        _finishedEvents.value = finishedEventList
+                    } else {
+                        _errorMessage.value = "No available."
                     }
-                    else -> {
-                        _errorMessage.value = "Failed finished events: ${response.code()} ${response.message()}"
-                    }
+                } else {
+                    _errorMessage.value = "Failed finished events: ${response.code()} ${response.message()}"
                 }
             } catch (e: Exception) {
                 _errorMessage.value = "Error: ${e.message}"
                 Log.e("HomeViewModel", "getFinishedEvents: ${e.localizedMessage}", e)
             } finally {
-                _isLoading.value = false
+                _isLoadingFinished.value = false
             }
         }
     }

@@ -2,6 +2,7 @@ package com.example.dicodingevent.ui.upcoming
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,9 +42,13 @@ class UpComingFragment : Fragment() {
         binding.rvUpcomingEvents.adapter = adapter
 
         observeViewModel()
-        upComingViewModel.getActiveEvents()
+
+        if (upComingViewModel.events.value.isNullOrEmpty()) {
+            upComingViewModel.getActiveEvents()
+        }
 
         binding.btnRefresh.setOnClickListener {
+            Log.d("UpComingFragment", "Refresh button clicked")
             resetErrorMessage()
             upComingViewModel.getActiveEvents()
         }

@@ -44,6 +44,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvDicodingEvent" />
 
+        <ProgressBar
+            android:id="@+id/progressBarUpcoming"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/rvUpcomingEvent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvUpcomingEvent" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvUpcomingEvent"
             android:layout_width="match_parent"
@@ -56,18 +67,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvUpcomingEvent" />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/tvFinishedEvent"
@@ -83,6 +82,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rvUpcomingEvent" />
+
+        <ProgressBar
+            android:id="@+id/progressBarFinished"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/rvFinishedEvent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvFinishedEvent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvFinishedEvent"
@@ -120,9 +130,9 @@
                 android:id="@+id/btnRefresh"
                 style="@style/Widget.Material3.Button.TonalButton"
                 android:layout_width="wrap_content"
-                android:text="@string/try_again"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:text="@string/try_again"
                 android:visibility="gone" />
         </LinearLayout>
 

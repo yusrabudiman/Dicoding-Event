@@ -78,13 +78,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        // Observe active horizontal list
         homeViewModel.events.observe(viewLifecycleOwner) { events ->
             val upcomingEvents = events.take(5)
             upcomingAdapter.submitList(upcomingEvents)
         }
 
-        // Observe finished
         homeViewModel.finishedEvents.observe(viewLifecycleOwner) { finishedEvents ->
             finishedEvents?.let {
                 val limitedFinishedEvents = it.take(5)
@@ -92,23 +90,22 @@ class HomeFragment : Fragment() {
             }
         }
 
-        // Observe loading
-        homeViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        homeViewModel.isLoadingUpcoming.observe(viewLifecycleOwner) { isLoading ->
+            binding.progressBarUpcoming.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
 
-        // Observe error
+        homeViewModel.isLoadingFinished.observe(viewLifecycleOwner) { isLoading ->
+            binding.progressBarFinished.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
         homeViewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
-            when {
-                !errorMessage.isNullOrEmpty() -> {
-                    binding.tvErrorMessage.text = errorMessage
-                    binding.tvErrorMessage.visibility = View.VISIBLE
-                    binding.btnRefresh.visibility = View.VISIBLE
-                }
-                else -> {
-                    binding.tvErrorMessage.visibility = View.GONE
-                    binding.btnRefresh.visibility = View.GONE
-                }
+            if (!errorMessage.isNullOrEmpty()) {
+                binding.tvErrorMessage.text = errorMessage
+                binding.tvErrorMessage.visibility = View.VISIBLE
+                binding.btnRefresh.visibility = View.VISIBLE
+            } else {
+                binding.tvErrorMessage.visibility = View.GONE
+                binding.btnRefresh.visibility = View.GONE
             }
         }
     }

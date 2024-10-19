@@ -54,6 +54,14 @@
             android:visibility="gone"
             tools:text="Error message" />
 
+        <Button
+            android:id="@+id/btnTryAgain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/try_again"
+            android:visibility="gone"
+            style="@style/Widget.Material3.Button.TonalButton"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvFinishedEvent"
             android:layout_width="match_parent"
