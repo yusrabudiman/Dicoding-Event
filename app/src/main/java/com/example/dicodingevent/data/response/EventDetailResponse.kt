@@ -56,5 +56,7 @@ data class Event(
     val endTime: String? = null,
 
     @field:SerializedName("category")
-    val category: String? = null
+    val category: String? = null,
+
+    var isFavorited: Boolean = false
 )

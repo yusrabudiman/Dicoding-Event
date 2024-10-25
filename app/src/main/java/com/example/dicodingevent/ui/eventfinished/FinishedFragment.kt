@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dicodingevent.R
+import com.example.dicodingevent.adapterviewmodel.MainViewModel
+import com.example.dicodingevent.adapterviewmodel.MainViewModelFactory
 import com.example.dicodingevent.adapterviewmodel.ReviewVerticalAdapter
 import com.example.dicodingevent.databinding.FragmentFinishedBinding
 import com.example.dicodingevent.ui.detail.DetailEventActivity
@@ -20,7 +22,9 @@ class FinishedFragment : Fragment() {
     private var _binding: FragmentFinishedBinding? = null
     private val binding get() = _binding!!
 
-    private val finishedViewModel: FinishedViewModel by viewModels()
+    private val finishedViewModel: MainViewModel by viewModels {
+        MainViewModelFactory.getInstance(requireContext())
+    }
     private lateinit var finishedAdapter: ReviewVerticalAdapter
 
     override fun onCreateView(
@@ -52,12 +56,12 @@ class FinishedFragment : Fragment() {
         observeViewModel()
 
         // Fetch data from ViewModel
-        finishedViewModel.getFinishedEvent()
+        finishedViewModel.getFinishedEvents()
 
         // Handle Try Again button click
         binding.btnTryAgain.setOnClickListener {
-            resetErrorMessage() // Reset error message
-            finishedViewModel.getFinishedEvent() // Coba ambil ulang data
+            resetErrorMessage()
+            finishedViewModel.getFinishedEvents()
         }
     }
 
@@ -125,42 +129,32 @@ class FinishedFragment : Fragment() {
         }
     }
 
-
     private fun observeViewModel() {
         finishedViewModel.finishedEvents.observe(viewLifecycleOwner) { finishedEvents ->
             finishedEvents?.let {
                 finishedAdapter.submitList(it)
-                binding.rvFinishedEvent.scrollToPosition(0) // Reset scroll to top when displaying all events
-                binding.btnTryAgain.visibility = View.GONE // Hide Try Again button when events are displayed
+                binding.rvFinishedEvent.scrollToPosition(0)
             }
         }
 
-        // Observe loading state
-        finishedViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            isLoading.also { if (it) resetErrorMessage() }
+        finishedViewModel.isLoadingFinished.observe(viewLifecycleOwner) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
 
-        // Observe error messages
         finishedViewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
-            when {
-                !errorMessage.isNullOrEmpty() -> {
-                    binding.tvErrorMessage.text = errorMessage
-                    binding.tvErrorMessage.visibility = View.VISIBLE
-                    binding.btnTryAgain.visibility = View.VISIBLE // Show button for retry on error
-                }
-                else -> {
-                    binding.tvErrorMessage.visibility = View.GONE
-                    binding.btnTryAgain.visibility = View.GONE // Hide button when there are no errors
-                }
+            if (!errorMessage.isNullOrEmpty()) {
+                binding.tvErrorMessage.text = errorMessage
+                binding.tvErrorMessage.visibility = View.VISIBLE
+                binding.btnTryAgain.visibility = View.VISIBLE
+            } else {
+                binding.tvErrorMessage.visibility = View.GONE
+                binding.btnTryAgain.visibility = View.GONE
             }
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 }
-

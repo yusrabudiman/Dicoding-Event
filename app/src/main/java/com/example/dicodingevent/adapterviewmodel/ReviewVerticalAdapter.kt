@@ -12,7 +12,6 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.example.dicodingevent.MainActivity
 import com.example.dicodingevent.R
 import com.example.dicodingevent.data.response.ListEventsItem
 import com.example.dicodingevent.databinding.ListEventVerticalBinding

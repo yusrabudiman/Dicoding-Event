@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="16dp"
     android:checkable="true"
     android:clickable="true"
@@ -12,9 +12,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:baselineAligned="false"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="8dp"
+        tools:ignore="DisableBaselineAlignment">
 
         <FrameLayout
             android:layout_width="100dp"
@@ -24,19 +24,21 @@
             android:layout_marginEnd="8dp">
 
             <ImageView
-                android:id="@+id/imageEvent"
+                android:id="@+id/ivEventImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/image_view_content"
                 android:scaleType="centerCrop"
-                tools:ignore="ImageContrastCheck" />
+                tools:ignore="ImageContrastCheck"
+                tools:src="@drawable/image_placeholder" />
 
             <ProgressBar
                 android:id="@+id/imageLoadingIndicator"
                 style="?android:attr/progressBarStyle"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:visibility="visible" />
         </FrameLayout>
 
         <LinearLayout
@@ -46,23 +48,23 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/titleEvent"
+                android:id="@+id/tvEventName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:textStyle="bold"
                 android:textSize="16sp"
-                tools:text="title" />
+                tools:text="Event Name" />
 
             <TextView
-                android:id="@+id/descriptionEvent"
+                android:id="@+id/tvEventDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="5"
                 android:textSize="12sp"
-                tools:text="description" />
+                tools:text="Event Description goes here." />
         </LinearLayout>
 
     </LinearLayout>

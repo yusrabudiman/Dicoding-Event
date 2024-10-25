@@ -7,4 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#FF6200EE</color> <!-- Warna primary untuk tema terang -->
+    <color name="colorPrimaryVariant">#FF3700B3</color> <!-- Warna variant untuk tema terang -->
+    <color name="colorPrimaryDark">#FFBB86FC</color> <!-- Warna primary untuk tema gelap -->
+    <color name="colorPrimaryVariantDark">#FF03DAC5</color> <!-- Warna variant untuk tema gelap -->
 </resources>

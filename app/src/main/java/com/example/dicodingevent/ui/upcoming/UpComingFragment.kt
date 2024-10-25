@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.dicodingevent.adapterviewmodel.MainViewModel
+import com.example.dicodingevent.adapterviewmodel.MainViewModelFactory
 import com.example.dicodingevent.adapterviewmodel.ReviewVerticalAdapter
 import com.example.dicodingevent.databinding.FragmentUpcomingBinding
 import com.example.dicodingevent.ui.detail.DetailEventActivity
@@ -18,7 +20,10 @@ class UpComingFragment : Fragment() {
     private var _binding: FragmentUpcomingBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: ReviewVerticalAdapter
-    private val upComingViewModel: UpComingViewModel by viewModels()
+
+    private val upComingViewModel: MainViewModel by viewModels {
+        MainViewModelFactory.getInstance(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +48,7 @@ class UpComingFragment : Fragment() {
 
         observeViewModel()
 
-        if (upComingViewModel.events.value.isNullOrEmpty()) {
+        if (upComingViewModel.activeEvents.value.isNullOrEmpty()) {
             upComingViewModel.getActiveEvents()
         }
 
@@ -61,21 +66,19 @@ class UpComingFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        upComingViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+        upComingViewModel.isLoadingActive.observe(viewLifecycleOwner) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-            binding.rvUpcomingEvents.visibility = if (isLoading) View.GONE else View.VISIBLE
         }
 
-        upComingViewModel.events.observe(viewLifecycleOwner) { events ->
-            adapter.submitList(events)
+        upComingViewModel.activeEvents.observe(viewLifecycleOwner) { activeEvents ->
+            adapter.submitList(activeEvents)
 
-            // Check if the event list is empty and update the visibility of the no events message
-            if (events.isNullOrEmpty()) {
+            if (activeEvents.isNullOrEmpty()) {
                 binding.tvNoEventsMessage.visibility = View.VISIBLE
-                binding.rvUpcomingEvents.visibility = View.GONE // Hide RecyclerView
+                binding.rvUpcomingEvents.visibility = View.GONE
             } else {
                 binding.tvNoEventsMessage.visibility = View.GONE
-                binding.rvUpcomingEvents.visibility = View.VISIBLE // Show RecyclerView
+                binding.rvUpcomingEvents.visibility = View.VISIBLE
             }
         }
 

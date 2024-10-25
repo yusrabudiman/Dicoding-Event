@@ -45,9 +45,9 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/image_view_content"
                 android:scaleType="fitCenter"
-
-                android:adjustViewBounds="true"/>
-
+                android:adjustViewBounds="true"
+                android:clipToOutline="true"
+                tools:ignore="UnusedAttribute" />
 
             <ProgressBar
                 android:id="@+id/progressBarImageLoading"
@@ -56,6 +56,18 @@
                 android:layout_gravity="center"
                 android:visibility="gone" />
 
+            <!-- Floating Action Button for Favorite -->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabLove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="-28dp"
+                android:layout_marginEnd="20dp"
+                android:contentDescription="@string/love_button"
+                android:src="@drawable/baseline_favorite_border_24"
+                android:visibility="gone"
+                />
 
             <TextView
                 android:id="@+id/tvEventName"

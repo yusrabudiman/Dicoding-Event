@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.dicodingevent.adapterviewmodel.MainViewModel
+import com.example.dicodingevent.adapterviewmodel.MainViewModelFactory
 import com.example.dicodingevent.adapterviewmodel.ReviewHorizontalAdapter
 import com.example.dicodingevent.adapterviewmodel.ReviewVerticalAdapter
 import com.example.dicodingevent.databinding.FragmentHomeBinding
@@ -18,7 +20,10 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val homeViewModel: HomeViewModel by viewModels()
+    private val homeViewModel: MainViewModel by viewModels {
+        MainViewModelFactory.getInstance(requireContext()) //for FragmentBinding
+    }
+
     private lateinit var upcomingAdapter: ReviewHorizontalAdapter
     private lateinit var finishedAdapter: ReviewVerticalAdapter
 
@@ -78,7 +83,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        homeViewModel.events.observe(viewLifecycleOwner) { events ->
+        homeViewModel.activeEvents.observe(viewLifecycleOwner) { events ->
             val upcomingEvents = events.take(5)
             upcomingAdapter.submitList(upcomingEvents)
         }
@@ -90,7 +95,7 @@ class HomeFragment : Fragment() {
             }
         }
 
-        homeViewModel.isLoadingUpcoming.observe(viewLifecycleOwner) { isLoading ->
+        homeViewModel.isLoadingActive.observe(viewLifecycleOwner) { isLoading ->
             binding.progressBarUpcoming.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
 
