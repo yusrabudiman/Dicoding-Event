@@ -13,6 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.dicodingevent.data.local.SettingPreferences
 import com.example.dicodingevent.data.local.dataStore
 import com.example.dicodingevent.databinding.ActivityMainBinding
+import com.example.dicodingevent.notifreminder.DailyReminder
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 

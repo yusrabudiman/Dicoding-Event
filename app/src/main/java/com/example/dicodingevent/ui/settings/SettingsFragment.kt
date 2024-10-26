@@ -21,6 +21,7 @@ import com.example.dicodingevent.R
 import com.example.dicodingevent.adapterviewmodel.MainViewModel
 import com.example.dicodingevent.adapterviewmodel.MainViewModelFactory
 import com.example.dicodingevent.databinding.FragmentSettingsBinding
+import com.example.dicodingevent.notifreminder.DailyReminder
 import kotlinx.coroutines.launch
 import com.google.android.material.switchmaterial.SwitchMaterial
 
