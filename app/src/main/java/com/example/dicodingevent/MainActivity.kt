@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        DailyReminder.setupDailyReminder(this)
         // Load theme from DataStore before setting content view
         lifecycleScope.launch {
             val pref = SettingPreferences.getInstance(applicationContext.dataStore)

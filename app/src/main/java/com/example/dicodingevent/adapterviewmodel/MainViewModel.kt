@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.dicodingevent.data.local.SettingPreferences
 import com.example.dicodingevent.data.local.favorite.RoomDBFavoriteEvent
@@ -11,10 +12,8 @@ import com.example.dicodingevent.data.repository.EventRepository
 import com.example.dicodingevent.data.response.EventDetailResponse
 import com.example.dicodingevent.data.response.EventResponse
 import com.example.dicodingevent.data.response.ListEventsItem
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import retrofit2.Response
 
 class MainViewModel(private val repository: EventRepository, private val settingPreferences: SettingPreferences) : ViewModel() {
@@ -164,7 +163,6 @@ class MainViewModel(private val repository: EventRepository, private val setting
             getFavoriteEvents()
         }
     }
-
     fun removeItemFavorite(eventId: Int) {
         viewModelScope.launch {
             repository.deleteFavoriteEvent(eventId.toString())
@@ -172,23 +170,24 @@ class MainViewModel(private val repository: EventRepository, private val setting
             getFavoriteEvents()
         }
     }
-
     suspend fun getThemeSetting(): Boolean {
-        return settingPreferences.themeSetting.first() // Mengambil nilai pertama dari Flow
+        return settingPreferences.themeSetting.first()
     }
-
-
     suspend fun saveThemeSetting(isDarkMode: Boolean) {
-        // Jika menggunakan StateFlow, Anda bisa menggunakan:
-        // _themeSetting.value = isDarkMode // Mengupdate StateFlow
-
-        // Untuk LiveData
+        // LiveData
         _themeSetting.postValue(isDarkMode)
-
-        // Simpan ke DataStore
+        // save to DataStore
         settingPreferences.saveThemeSetting(isDarkMode)
     }
+    fun getReminderSetting(): LiveData<Boolean> {
+        return settingPreferences.reminderSetting.asLiveData()
+    }
 
+    fun saveReminderSetting(isReminderActive: Boolean) {
+        viewModelScope.launch {
+            settingPreferences.saveReminderSetting(isReminderActive)
+        }
+    }
     fun clearErrorMessage() {
         _errorMessage.value = null
     }

@@ -18,7 +18,6 @@ import com.example.dicodingevent.ui.detail.DetailEventActivity
 import com.google.android.material.search.SearchView
 
 class FinishedFragment : Fragment() {
-
     private var _binding: FragmentFinishedBinding? = null
     private val binding get() = _binding!!
 
@@ -109,19 +108,19 @@ class FinishedFragment : Fragment() {
             finishedViewModel.finishedEvents.observe(viewLifecycleOwner) { finishedEvents ->
                 finishedAdapter.submitList(finishedEvents)
                 binding.rvFinishedEvent.scrollToPosition(0) // Reset scroll to top
-                binding.tvNoResults.visibility = View.GONE // Hide no results TextView
-                binding.btnTryAgain.visibility = View.GONE // Hide Try Again button when showing all events
+                binding.tvNoResults.visibility = View.GONE
+                binding.btnTryAgain.visibility = View.GONE
             }
         } else {
             finishedViewModel.searchFinishedEvents(query).observe(viewLifecycleOwner) { searchResults ->
                 if (searchResults.isNullOrEmpty()) {
-                    binding.tvErrorMessage.visibility = View.GONE // Hide error message if not relevant
-                    binding.tvNoResults.visibility = View.VISIBLE // Show no results message
-                    binding.btnTryAgain.visibility = View.GONE // Hide button on no results
+                    binding.tvErrorMessage.visibility = View.GONE
+                    binding.tvNoResults.visibility = View.VISIBLE
+                    binding.btnTryAgain.visibility = View.GONE
                 } else {
-                    binding.tvNoResults.visibility = View.GONE // Hide no results message
-                    binding.tvErrorMessage.visibility = View.GONE // Hide error message
-                    binding.btnTryAgain.visibility = View.GONE // Hide the button when results are found
+                    binding.tvNoResults.visibility = View.GONE
+                    binding.tvErrorMessage.visibility = View.GONE
+                    binding.btnTryAgain.visibility = View.GONE
                     finishedAdapter.submitList(searchResults)
                 }
                 binding.rvFinishedEvent.scrollToPosition(0) // Reset scroll to top

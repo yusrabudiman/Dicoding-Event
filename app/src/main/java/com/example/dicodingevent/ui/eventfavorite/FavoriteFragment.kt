@@ -53,7 +53,7 @@ class FavoriteFragment : Fragment() {
 
         recyclerView.adapter = adapter
 
-        // Ambil data favorit saat fragment dibuat
+        // getfavorite from database
         favoriteViewModel.getFavoriteEvents()
 
         // Observe LiveData from ViewModel

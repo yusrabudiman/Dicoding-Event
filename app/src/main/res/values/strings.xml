@@ -24,4 +24,6 @@
     <string name="dark_mode">Dark Mode</string>
     <string name="dark_mode_switch">Dark Mode</string>
     <string name="enable_dark_mode">Enable Dark Mode</string>
+    <string name="daily_reminder">Daily Reminder</string>
+    <string name="enable_daily_notification_reminder">Enable Daily Notification Reminder</string>
 </resources>

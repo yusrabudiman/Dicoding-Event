@@ -46,6 +46,10 @@ android {
 }
 
 dependencies {
+    //WorkManager Daily Reminder
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.work.runtime)
+    implementation(libs.android.async.http)
     //datastore key-value
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.lifecycle.viewmodel.ktx.v261)
