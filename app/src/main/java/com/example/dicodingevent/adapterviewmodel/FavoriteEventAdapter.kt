@@ -1,3 +1,5 @@
+package com.example.dicodingevent.adapterviewmodel
+
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
@@ -38,8 +40,8 @@ class FavoriteEventAdapter(private val onItemClick: ((Int) -> Unit)? = null) :
 
             Glide.with(binding.ivEventImage.context)
                 .load(event.image)
-                .placeholder(R.drawable.image_placeholder)
-                .error(R.drawable.broken_image)
+                .placeholder(R.mipmap.image_placeholder_background)
+                .error(R.mipmap.broken_image_background)
                 .listener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(
                         e: GlideException?,
@@ -64,9 +66,8 @@ class FavoriteEventAdapter(private val onItemClick: ((Int) -> Unit)? = null) :
                 })
                 .into(binding.ivEventImage)
 
-            // Set up click listener
             binding.root.setOnClickListener {
-                event.eventID?.let { it1 -> onItemClick?.invoke(it1) } // Make sure to pass the correct event ID
+                event.eventID?.let { it1 -> onItemClick?.invoke(it1) }
             }
         }
     }

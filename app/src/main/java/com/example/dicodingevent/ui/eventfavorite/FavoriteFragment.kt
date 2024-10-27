@@ -1,19 +1,18 @@
 package com.example.dicodingevent.ui.eventfavorite
 
-import FavoriteEventAdapter
 import android.content.Intent
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dicodingevent.R
+import com.example.dicodingevent.adapterviewmodel.FavoriteEventAdapter
 import com.example.dicodingevent.adapterviewmodel.MainViewModel
 import com.example.dicodingevent.adapterviewmodel.MainViewModelFactory
 import com.example.dicodingevent.ui.detail.DetailEventActivity
@@ -42,21 +41,15 @@ class FavoriteFragment : Fragment() {
         tvNoEventsMessage = view.findViewById(R.id.tvNoEventsMessage)
         tvErrorMessage = view.findViewById(R.id.tvErrorMessage)
 
-        // Set up RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = FavoriteEventAdapter { eventId ->
             val intent = Intent(context, DetailEventActivity::class.java)
             intent.putExtra("EXTRA_EVENT_ID", eventId)
-            Log.d("FavoriteFragment", "Membuka detail untuk Event ID: $eventId")
             context?.startActivity(intent)
         }
 
         recyclerView.adapter = adapter
-
-        // getfavorite from database
         favoriteViewModel.getFavoriteEvents()
-
-        // Observe LiveData from ViewModel
         observeViewModel()
 
         return view

@@ -12,27 +12,16 @@ import kotlinx.coroutines.flow.map
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 class SettingPreferences private constructor(private val dataStore: DataStore<Preferences>) {
 
-    private val THEME_KEY = booleanPreferencesKey("theme_setting")
-    private val DAILY_REMINDER_KEY = booleanPreferencesKey("daily_reminder")
+    private val themeKey = booleanPreferencesKey("theme_setting")
 
     val themeSetting: Flow<Boolean> = dataStore.data
         .map { preferences ->
-            preferences[THEME_KEY] ?: false
+            preferences[themeKey] ?: false
         }
 
     suspend fun saveThemeSetting(isDarkMode: Boolean) {
         dataStore.edit { preferences ->
-            preferences[THEME_KEY] = isDarkMode
-        }
-    }
-    val reminderSetting: Flow<Boolean> = dataStore.data
-        .map { preferences ->
-            preferences[DAILY_REMINDER_KEY] ?: false
-    }
-
-    suspend fun saveReminderSetting(isReminderActive: Boolean) {
-        dataStore.edit { preferences ->
-            preferences[DAILY_REMINDER_KEY] = isReminderActive
+            preferences[themeKey] = isDarkMode
         }
     }
 
@@ -45,7 +34,6 @@ class SettingPreferences private constructor(private val dataStore: DataStore<Pr
                 INSTANCE ?: SettingPreferences(dataStore).also { INSTANCE = it }
             }
         }
-        // method for SettingPreferences
         fun provideSettingPreferences(context: Context): SettingPreferences {
             return getInstance(context.dataStore)
         }

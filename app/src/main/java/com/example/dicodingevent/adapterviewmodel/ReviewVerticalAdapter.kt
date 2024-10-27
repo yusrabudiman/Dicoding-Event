@@ -36,15 +36,13 @@ class ReviewVerticalAdapter(private val onItemClick: ((Int?) -> Unit)? = null) :
         fun bind(event: ListEventsItem) {
             binding.titleEvent.text = event.name
             binding.descriptionEvent.text = event.summary
-
-            // Show a loading indicator while the image is being loaded
             binding.imageLoadingIndicator.visibility = View.VISIBLE
 
             // Use Glide with placeholder, error image, and RequestListener
             Glide.with(binding.imageEvent.context)
                 .load(event.imageLogo)
-                .placeholder(R.drawable.image_placeholder) // Placeholder while loading
-                .error(R.drawable.broken_image) // Image to show on error
+                .placeholder(R.mipmap.image_placeholder_background)
+                .error(R.mipmap.broken_image_background)
                 .listener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(
                         e: GlideException?,
@@ -52,9 +50,8 @@ class ReviewVerticalAdapter(private val onItemClick: ((Int?) -> Unit)? = null) :
                         target: Target<Drawable>,
                         isFirstResource: Boolean
                     ): Boolean {
-                        // Hide loading indicator on failure
                         binding.imageLoadingIndicator.visibility = View.GONE
-                        return false // Allow Glide to handle the error
+                        return false
                     }
 
                     override fun onResourceReady(
@@ -64,9 +61,8 @@ class ReviewVerticalAdapter(private val onItemClick: ((Int?) -> Unit)? = null) :
                         dataSource: DataSource,
                         isFirstResource: Boolean
                     ): Boolean {
-                        // Hide loading indicator when the image is loaded successfully
                         binding.imageLoadingIndicator.visibility = View.GONE
-                        return false // Allow Glide to display the image
+                        return false
                     }
                 })
                 .into(binding.imageEvent)

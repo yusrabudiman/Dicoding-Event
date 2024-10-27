@@ -37,27 +37,18 @@ class FinishedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize the finished adapter
         finishedAdapter = ReviewVerticalAdapter { eventId ->
             val intent = Intent(context, DetailEventActivity::class.java)
             intent.putExtra("EXTRA_EVENT_ID", eventId)
             context?.startActivity(intent)
         }
 
-        // Setup RecyclerView for finished events
         binding.rvFinishedEvent.layoutManager = LinearLayoutManager(requireContext())
         binding.rvFinishedEvent.adapter = finishedAdapter
 
-        // Set up SearchBar and SearchView
         setupSearchBar()
-
-        // LiveData observation
         observeViewModel()
-
-        // Fetch data from ViewModel
         finishedViewModel.getFinishedEvents()
-
-        // Handle Try Again button click
         binding.btnTryAgain.setOnClickListener {
             resetErrorMessage()
             finishedViewModel.getFinishedEvents()

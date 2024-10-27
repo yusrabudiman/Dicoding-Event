@@ -8,7 +8,6 @@
     tools:context=".ui.settings.SettingsFragment">
 
     <LinearLayout
-        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -26,7 +25,6 @@
             tools:ignore="RtlSymmetry">
 
             <TextView
-                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/dark_mode_switch"
@@ -34,7 +32,6 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/enable_dark_mode"
@@ -51,7 +48,6 @@
 
 
     <LinearLayout
-        android:id="@+id/daily_notification"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="72dp"
@@ -71,7 +67,6 @@
             tools:ignore="RtlSymmetry">
 
             <TextView
-                android:id="@+id/title_notification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/daily_reminder"
@@ -81,7 +76,6 @@
                 tools:layout_editor_absoluteY="80dp" />
 
             <TextView
-                android:id="@+id/description_daily_notification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/enable_daily_notification_reminder"

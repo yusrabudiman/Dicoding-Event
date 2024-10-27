@@ -7,7 +7,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import androidx.work.*
+import androidx.work.CoroutineWorker
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkerParameters
 import com.example.dicodingevent.R
 import com.example.dicodingevent.data.local.database.AppDatabaseRoomEvent
 import com.example.dicodingevent.data.repository.EventRepository
@@ -67,12 +72,12 @@ class DailyReminder(
         }
 
         val builder = NotificationCompat.Builder(context, "event_channel")
-            .setSmallIcon(R.drawable.dicoding_event_image)
+            .setSmallIcon(R.mipmap.dicoding_event_image_background)
             .setContentTitle(event.name)
             .setContentText("Dimulai pada: ${event.beginTime}")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
 
-        notificationManager.notify(event.id.hashCode(), builder.build()) // Gunakan hash dari event ID sebagai ID notifikasi
+        notificationManager.notify(event.id.hashCode(), builder.build())
     }
 
     private fun createNotificationChannel(context: Context) {
@@ -105,7 +110,7 @@ class DailyReminder(
 
                 WorkManager.getInstance(context).enqueueUniquePeriodicWork(
                     "daily_reminder",
-                    ExistingPeriodicWorkPolicy.REPLACE,
+                    ExistingPeriodicWorkPolicy.UPDATE,
                     periodicWorkRequest
                 )
                 val oneTimeWorkRequest = OneTimeWorkRequestBuilder<DailyReminder>()

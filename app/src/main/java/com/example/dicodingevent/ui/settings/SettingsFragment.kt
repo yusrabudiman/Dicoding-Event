@@ -6,8 +6,6 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -15,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.dicodingevent.R
@@ -22,15 +21,15 @@ import com.example.dicodingevent.adapterviewmodel.MainViewModel
 import com.example.dicodingevent.adapterviewmodel.MainViewModelFactory
 import com.example.dicodingevent.databinding.FragmentSettingsBinding
 import com.example.dicodingevent.notifreminder.DailyReminder
-import kotlinx.coroutines.launch
 import com.google.android.material.switchmaterial.SwitchMaterial
+import kotlinx.coroutines.launch
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
     private lateinit var sharedPreferences: SharedPreferences
-    private val PREF_DAILY_REMINDER_KEY = "pref_daily_reminder"
+    private val prefDailyReminderKey = "pref_daily_reminder"
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
 
     private val settingsViewModel: MainViewModel by viewModels {
@@ -62,16 +61,14 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                     "Izin Notifikasi telah diberikan",
                     Toast.LENGTH_SHORT
                 ).show()
-                Log.d("SettingsFragment", "Notification permission granted.")
             } else {
                 switchDailyReminderNotification.isChecked = false
                 saveDailyReminderSetting(false)
                 Toast.makeText(
                     requireContext(),
-                    "Izin Notifikasi ditolak. Harap aktifkan di pengaturan.",
+                    "Permission denied",
                     Toast.LENGTH_SHORT
                 ).show()
-                Log.d("SettingsFragment", "Notification permission denied.")
             }
         }
 
@@ -99,11 +96,11 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 }
             }
         }
-        val isDailyReminderEnabled = sharedPreferences.getBoolean(PREF_DAILY_REMINDER_KEY, false)
+        val isDailyReminderEnabled = sharedPreferences.getBoolean(prefDailyReminderKey, false)
         switchDailyReminderNotification.isChecked = isDailyReminderEnabled
 
         switchDailyReminderNotification.setOnCheckedChangeListener { _, isChecked ->
-            saveDailyReminderSetting(isChecked) // Simpan status ke SharedPreferences
+            saveDailyReminderSetting(isChecked)
 
             if (isChecked) {
                 if (ContextCompat.checkSelfPermission(
@@ -123,7 +120,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         }
     }
     private fun saveDailyReminderSetting(isEnabled: Boolean) {
-        sharedPreferences.edit().putBoolean(PREF_DAILY_REMINDER_KEY, isEnabled).apply()
+        sharedPreferences.edit().putBoolean(prefDailyReminderKey, isEnabled).apply()
     }
 
     override fun onDestroyView() {

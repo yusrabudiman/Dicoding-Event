@@ -21,7 +21,6 @@
     <string name="favorite_event">Favorite Event</string>
     <string name="event_favorite_collection">Event Favorite Collection For You</string>
     <string name="now_you_can_add_event_to_favorite">Now you can add detail event to favorite!</string>
-    <string name="dark_mode">Dark Mode</string>
     <string name="dark_mode_switch">Dark Mode</string>
     <string name="enable_dark_mode">Enable Dark Mode</string>
     <string name="daily_reminder">Daily Reminder</string>

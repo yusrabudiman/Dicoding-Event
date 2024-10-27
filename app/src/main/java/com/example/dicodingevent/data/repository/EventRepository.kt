@@ -35,7 +35,7 @@ class EventRepository(
     }
 
     suspend fun deleteFavoriteEvent(eventId: String) {
-        favoriteEventDao.deleteItemFavorite(eventId) // Implement this method in your DAO
+        favoriteEventDao.deleteItemFavorite(eventId)
     }
 
     suspend fun getFavoriteEvents(): List<RoomDBFavoriteEvent> {

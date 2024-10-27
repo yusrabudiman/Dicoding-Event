@@ -30,7 +30,7 @@
                 android:contentDescription="@string/image_view_content"
                 android:scaleType="centerCrop"
                 tools:ignore="ImageContrastCheck"
-                tools:src="@drawable/image_placeholder" />
+                tools:src="@mipmap/image_placeholder_round" />
 
             <ProgressBar
                 android:id="@+id/imageLoadingIndicator"

@@ -10,7 +10,6 @@ import java.util.UUID
 @Entity(tableName = "favorite_db_event")
 @Parcelize
 
-//favorite list event
 data class RoomDBFavoriteEvent(
     @PrimaryKey
     @ColumnInfo(name = "id")

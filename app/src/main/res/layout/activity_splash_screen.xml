@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SplashScreen">
@@ -26,7 +25,8 @@
             android:layout_width="356dp"
             android:layout_height="103dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/dicoding_event_image"
+
+            android:src="@mipmap/dicoding_event_image_background"
             tools:ignore="ContentDescription,ImageContrastCheck,VisualLintBounds" />
     </androidx.cardview.widget.CardView>
 

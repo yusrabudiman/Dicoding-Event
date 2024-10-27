@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewOutlineProvider
@@ -42,12 +41,7 @@ class DetailEventActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val eventId = intent.getIntExtra("EXTRA_EVENT_ID", -1)
-        if (eventId != -1) {
-            Log.d("DetailEventActivity", "Event ID diterima: $eventId")
-            detailViewModel.getEventDetail(eventId)
-        } else {
-            Log.e("DetailEventActivity", "ID Event tidak valid")
-        }
+        eventId.takeIf { it != -1 }?.let { detailViewModel.getEventDetail(it) }
         observeViewModel()
 
         detailViewModel.getFavoriteEvents()
@@ -92,8 +86,8 @@ class DetailEventActivity : AppCompatActivity() {
                 progressBarImageLoading.visibility = View.VISIBLE
                 Glide.with(this@DetailEventActivity)
                     .load(event.imageLogo)
-                    .placeholder(R.drawable.image_placeholder)
-                    .error(R.drawable.broken_image)
+                    .placeholder(R.mipmap.image_placeholder_background)
+                    .error(R.mipmap.broken_image_background)
                     .listener(object : RequestListener<Drawable> {
                         override fun onLoadFailed(
                             e: GlideException?,
@@ -102,12 +96,12 @@ class DetailEventActivity : AppCompatActivity() {
                             isFirstResource: Boolean
                         ): Boolean {
                             progressBarImageLoading.visibility = View.GONE
-                            imgEventLogo.setImageResource(R.drawable.broken_image)
+                            imgEventLogo.setImageResource(R.mipmap.broken_image_background)
                             imgEventLogo.setOnClickListener {
                                 Glide.with(this@DetailEventActivity)
                                     .load(event.imageLogo)
-                                    .placeholder(R.drawable.image_placeholder)
-                                    .error(R.drawable.broken_image)
+                                    .placeholder(R.mipmap.image_placeholder_background)
+                                    .error(R.mipmap.broken_image_background)
                                     .listener(this)
                                     .into(imgEventLogo)
                             }

@@ -1,7 +1,6 @@
 package com.example.dicodingevent
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
@@ -14,6 +13,7 @@ import com.example.dicodingevent.data.local.SettingPreferences
 import com.example.dicodingevent.data.local.dataStore
 import com.example.dicodingevent.databinding.ActivityMainBinding
 import com.example.dicodingevent.notifreminder.DailyReminder
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         DailyReminder.setupDailyReminder(this)
-        // Load theme from DataStore before setting content view
         lifecycleScope.launch {
             val pref = SettingPreferences.getInstance(applicationContext.dataStore)
             val isDarkMode = pref.themeSetting.first()

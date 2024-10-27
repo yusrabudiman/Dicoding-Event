@@ -37,8 +37,8 @@ class ReviewHorizontalAdapter(private val onItemClick: ((Int?) -> Unit)? = null)
             binding.progressBarImageLoading.visibility = android.view.View.VISIBLE
             Glide.with(binding.imageEvent.context)
                 .load(event.imageLogo)
-                .placeholder(R.drawable.image_placeholder)
-                .error(R.drawable.broken_image)
+                .placeholder(R.mipmap.image_placeholder_background)
+                .error(R.mipmap.broken_image_background)
                 .listener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(
                         e: GlideException?,

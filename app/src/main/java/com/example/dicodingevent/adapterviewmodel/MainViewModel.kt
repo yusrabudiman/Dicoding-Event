@@ -1,10 +1,9 @@
 package com.example.dicodingevent.adapterviewmodel
 
-import android.util.Log
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.dicodingevent.data.local.SettingPreferences
 import com.example.dicodingevent.data.local.favorite.RoomDBFavoriteEvent
@@ -43,7 +42,6 @@ class MainViewModel(private val repository: EventRepository, private val setting
     val isLoadingDetail: LiveData<Boolean> = _isLoadingDetail
 
     private val _themeSetting = MutableLiveData<Boolean>()
-    val themeSetting: LiveData<Boolean> get() = _themeSetting
 
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
@@ -72,7 +70,6 @@ class MainViewModel(private val repository: EventRepository, private val setting
                 }
             } catch (e: Exception) {
                 _errorMessage.value = "Error: ${e.message}"
-                Log.e("MainViewModel", "getActiveEvents: ${e.localizedMessage}", e)
             } finally {
                 _isLoadingActive.value = false
             }
@@ -95,7 +92,6 @@ class MainViewModel(private val repository: EventRepository, private val setting
                 }
             } catch (e: Exception) {
                 _errorMessage.value = "Error: ${e.message}"
-                Log.e("MainViewModel", "getFinishedEvents: ${e.localizedMessage}", e)
             } finally {
                 _isLoadingFinished.value = false
             }
@@ -114,11 +110,9 @@ class MainViewModel(private val repository: EventRepository, private val setting
                     _eventDetail.value = response.body()
                 } else {
                     _errorMessage.value = "Failed to fetch event detail: ${response.message()}"
-                    Log.e("MainViewModel", "Error: ${response.message()}")
                 }
             } catch (e: Exception) {
                 _errorMessage.value = e.message
-                Log.e("MainViewModel", "Exception: ${e.message}")
             } finally {
                 _isLoadingDetail.value = false
             }
@@ -145,7 +139,6 @@ class MainViewModel(private val repository: EventRepository, private val setting
                 clearErrorMessage()
             } catch (e: Exception) {
                 _errorMessage.value = "Error: ${e.message}"
-                Log.e("MainViewModel", "getFavoriteEvents: ${e.localizedMessage}", e)
             } finally {
                 _isLoadingFavorite.value = false
             }
@@ -174,20 +167,10 @@ class MainViewModel(private val repository: EventRepository, private val setting
         return settingPreferences.themeSetting.first()
     }
     suspend fun saveThemeSetting(isDarkMode: Boolean) {
-        // LiveData
         _themeSetting.postValue(isDarkMode)
-        // save to DataStore
         settingPreferences.saveThemeSetting(isDarkMode)
     }
-    fun getReminderSetting(): LiveData<Boolean> {
-        return settingPreferences.reminderSetting.asLiveData()
-    }
 
-    fun saveReminderSetting(isReminderActive: Boolean) {
-        viewModelScope.launch {
-            settingPreferences.saveReminderSetting(isReminderActive)
-        }
-    }
     fun clearErrorMessage() {
         _errorMessage.value = null
     }
